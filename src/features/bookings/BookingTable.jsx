@@ -5,11 +5,26 @@ import Empty from "../../ui/Empty";
 import useBookings from "./useBookings";
 import Spinner from "../../ui/Spinner";
 import Pagination from "../../ui/Pagination";
+import { useSearchContext } from "../../context/SearchContext";
+import { useEffect } from "react";
 
 function BookingTable() {
   const { bookings, isLoading, count } = useBookings();
+  const { query } = useSearchContext();
+
+  console.log(bookings);
+
   if (isLoading) return <Spinner />;
   if (bookings.length === 0) return <Empty resource="booking" />;
+
+  const filterData = bookings?.filter((booking) => {
+    const str = booking.guests.fullName;
+
+    if (str.toUpperCase().startsWith(query.toUpperCase())) return true;
+    return false;
+  });
+
+  console.log(filterData);
 
   return (
     <Menus>
@@ -24,7 +39,7 @@ function BookingTable() {
         </Table.Header>
 
         <Table.Body
-          data={bookings}
+          data={filterData}
           render={(booking) => (
             <BookingRow key={booking.id} booking={booking} />
           )}
