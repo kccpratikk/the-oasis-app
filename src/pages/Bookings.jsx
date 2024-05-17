@@ -13,7 +13,7 @@ function Bookings() {
 
         <BookingTableOperations />
       </Row>
-      <SearchBox />
+      
       <BookingTable />
     </>
   );
